@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>Wiki Index</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'wiki/style.css' %}">
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript">
+		$( document ).ready(function() {
+			var leftOffset = parseInt($("#sidebar").css('left'));
+			$(window).scroll(function(){
+	  			$('#sidebar').css('left',-$(window).scrollLeft() + leftOffset);
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div id="sidebar">
+			<p>Index</p>
+			<ul>
+				<li>
+					<a href="/admin">Admin</a>
+				</li>
+			</ul>
+			<p id="sidecred"> Alex Carver 2015</p>
+		</div>
+		<div id="main">
+			<h1>Front Page</h1>
+			{% if latest_added_pages %}
+			<p>Recently added pages:</p>
+			    <ul>
+			    {% for page in latest_added_pages %}
+			        <li><a href="{% url 'wiki:wikipage' page.title %}">{{ page }}</a></li>
+			    {% endfor %}
+			    </ul>
+			{% else %}
+			    <p>No pages are available.</p>
+			{% endif %}
+		</div>
+	</body>
+<html>

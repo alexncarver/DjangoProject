@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>{{ page.full_title }}</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'wiki/style.css' %}">
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript">
+		$( document ).ready(function() {
+			var leftOffset = parseInt($("#sidebar").css('left'));
+			$(window).scroll(function(){
+	  			$('#sidebar').css('left',-$(window).scrollLeft() + leftOffset);
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div id="sidebar">
+			<p><a href="{% url 'wiki:wikipage' page.title %}">{{ page.full_title }}</a></p>
+			<ul>
+				<li>
+					<a href="{% url 'wiki:index' %}">Index</a>
+				</li>
+				<li>
+					<a href="/admin">Admin</a>
+				</li>
+			</ul>
+			<p id="sidecred"> Alex Carver 2015</p>
+		</div>
+		<div id="main">
+			<h1 id="maintitle">{{ page.full_title }}</h1>
+			<h3>{{ page.get_category_display }}</h3>
+			<hr align="left" width="80%">
+			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+			<form action="{% url 'wiki:editpage' page.title %}" method="post">
+				{% csrf_token %}
+				<label>
+					<h3>Edit page</h3>
+					<textarea style="width:80%;height:80%"name="content">{{page.content}}</textarea>
+				</label>
+				<input type="submit" value="Save" />
+			</form>
+		</div>	
+	</body>
+<html>
