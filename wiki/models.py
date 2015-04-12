@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.forms import ModelForm
 
 
 class Page(models.Model):
@@ -37,6 +38,12 @@ class Page(models.Model):
     @classmethod
     def get_by_id(cls, path, ver):
         return cls.objects.filter(title__iexact=path).distinct().get(id=ver)
+
+
+class PageForm(ModelForm):
+    class Meta:
+        model = Page
+        fields = ['category', 'content']
 
     
 ##

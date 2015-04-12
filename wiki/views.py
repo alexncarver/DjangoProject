@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
-from wiki.models import Page
+from wiki.models import Page, PageForm
 
 def Index(request):
   latest_added_pages = Page.objects.order_by('-pub_date')[:20]
@@ -22,12 +22,16 @@ def EditPage(request, title):
   except Page.DoesNotExist:
     page = Page(title=title, content="")
 
+
   if request.method == 'GET':
-    return render(request, 'wiki/edit.html', {'page': page,})
+    form = PageForm(instance=page)
+    return render(request, 'wiki/edit.html', {'page': page, 'form' : form})
 
   if request.method == 'POST':
-    page.content = request.POST['content']
-    page.save()
+    form = PageForm(request.POST, instance=page)
+    form.save()
+    #page.content = request.POST['content']
+    #page.save()
     return HttpResponseRedirect(reverse('wiki:wikipage', args=(title,)))
     
   

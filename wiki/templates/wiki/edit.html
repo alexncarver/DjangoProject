@@ -33,10 +33,17 @@
 			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 			<form action="{% url 'wiki:editpage' page.title %}" method="post">
 				{% csrf_token %}
-				<label>
-					<h3>Edit page</h3>
-					<textarea style="width:80%;height:80%"name="content">{{page.content}}</textarea>
-				</label>
+				{{ form.non_field_errors }}
+				<div class="fieldWrapper">
+					{{ form.category.errors }}
+	    			<label for="{{ form.category.id_for_label }}">Category:</label><br/>
+	    			{{ form.category }}
+    			</div>
+    			<div class="fieldWrapper">
+	    			{{ form.content.errors }}
+	    			<label for="{{ form.content.id_for_label }}">Content:</label><br/>
+	    			{{ form.content }}
+    			</div>
 				<input type="submit" value="Save" />
 			</form>
 		</div>	
